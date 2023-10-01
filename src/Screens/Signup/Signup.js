@@ -12,6 +12,11 @@ import HeaderComp from '../../Components/HeaderComp';
 import TextComp from '../../Components/TextComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import navigationStrings from '../../Navigations/navigationStrings';
+import validator from '../../utils/validations'
+import { showError } from '../../utils/helperFunctions';
+import axios from 'axios';
+import { userSignup } from '../../redux/actions/auth';
+
 
 // create a component
 const Signup = ({navigation}) => {
@@ -19,15 +24,54 @@ const Signup = ({navigation}) => {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [secureText, setSecureText] = useState(true)
+    const [isLoading, setLoading] = useState(false)
 
-    const onPressSignup = () =>{
-        navigation.navigate(navigationStrings.OTP_VERIFICATION)
+
+    const isValidData= () =>{
+        const error = validator({
+            userName,
+            fullName,
+            email,
+            password
+        })
+        if(error){
+            showError(error)
+            return false
+        }
+        return true
+    }
+
+    const onPressSignup = async() =>{
+
+        const checkValid = isValidData()
+
+        if(checkValid){
+            setLoading(true)
+            let data =  {
+                userName:userName,
+                fullName:fullName,
+                email:email,
+                password:password
+            }
+            try {
+                let res = await userSignup(data)
+                console.log("resO",res)
+                setLoading(false)
+                navigation.navigate(navigationStrings.OTP_VERIFICATION,{data: res.data})
+            } catch (error) {
+                console.log("error raised",error)
+                showError(error?.error || error?.message)
+                setLoading(false)
+            }
+        }
+
     }
 
     return (
-        <WrapperContainer>
+        <WrapperContainer
+        
+        >
             <HeaderComp />
 
             <KeyboardAwareScrollView>
@@ -63,14 +107,7 @@ const Signup = ({navigation}) => {
                             secureText={secureText ? strings.SHOW : strings.HIDE}
                             onPressSecure={() => setSecureText(!secureText)}
                         />
-                        <TextInputComp
-                            value={confirmPassword}
-                            placeholder={strings.CONFIRM_PASSWORD}
-                            onChangeText={(value) => setConfirmPassword(value)}
-                            secureTextEntry={secureText}
-                            secureText={secureText ? strings.SHOW : strings.HIDE}
-                            onPressSecure={() => setSecureText(!secureText)}
-                        />
+                       
 
                     </View>
 
@@ -78,6 +115,7 @@ const Signup = ({navigation}) => {
                         text={strings.SIGN_UP}
                         style={{ marginTop: moderateScaleVertical(52) }}
                         onPress={onPressSignup}
+                        isLoading={isLoading}
                     />
                 </View>
             </KeyboardAwareScrollView>

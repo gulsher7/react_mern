@@ -14,12 +14,15 @@ import { showError } from '../../utils/helperFunctions';
 
 import validator from '../../utils/validations'
 import navigationStrings from '../../Navigations/navigationStrings';
+import { userLogin } from '../../redux/actions/auth';
+import { saveUserData } from '../../redux/reducers/auth';
 
 // create a component
 const Login = ({navigation}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [secureText, setSecureText] = useState(true)
+    const [isLoading, setLoading] = useState(false)
 
 
 
@@ -34,12 +37,22 @@ const Login = ({navigation}) => {
         }
         return true
     }
-    const onLogin = () =>{
+    const onLogin = async() =>{
 
         const checkValid = isValidData()
         if(checkValid){
-            navigation.navigate(navigationStrings.TAB_ROUTES)
-            // alert("hit api")
+            setLoading(true)
+            try {
+                const res = await userLogin({
+                    email,
+                    password})
+                    console.log("login api res",res)
+                    setLoading(false)
+            } catch (error) {
+                console.log("error in login api",error)
+                showError(error?.error)
+                setLoading(false)
+            }
         }
     }
 
@@ -88,6 +101,7 @@ const Login = ({navigation}) => {
                             <ButtonComp
                                 text={strings.LOGIN}
                                 onPress={onLogin}
+                                isLoading={isLoading}
                             />
                         </View>
                     </View>

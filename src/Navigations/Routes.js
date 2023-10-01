@@ -20,10 +20,10 @@ export default function Routes() {
         <NavigationContainer>
             <Stack.Navigator>
 
-            {AuthStack(Stack)}
-            {MainStack(Stack)}
+            {/* {AuthStack(Stack)}
+            {MainStack(Stack)} */}
 
-            {/* {true ?  MainStack(Stack):AuthStack(Stack)}      */}
+            {!!userData?.token ?  MainStack(Stack):AuthStack(Stack)}     
    
             </Stack.Navigator>
 
