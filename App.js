@@ -11,7 +11,7 @@ import FlashMessage from "react-native-flash-message";
 import fontFamily from './src/styles/fontFamily';
 import { textScale } from './src/styles/responsiveSize';
 
-const { dispatch } = store;
+
 
 const App = () => {
 
