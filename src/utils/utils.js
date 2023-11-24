@@ -25,6 +25,7 @@ export async function apiReq(
 
 	return new Promise(async (res, rej) => {
 		const getTokenHeader = await getHeaders();
+
 		headers = {
 			...getTokenHeader,
 			...headers
@@ -41,6 +42,7 @@ export async function apiReq(
 
 		axios[method](endPoint, data, { headers })
 			.then(result => {
+				console.log("api result response",result)
 				const { data } = result;
 
 				if (data.status === false) {
@@ -54,6 +56,7 @@ export async function apiReq(
 				console.log(error && error.response, 'the error respne')
 				if (error && error.response && error.response.status === 401) {
 							//logout user
+							alert("user not valid")
 				}
 				if (error && error.response && error.response.data) {
 					if (!error.response.data.message) {

@@ -12,5 +12,6 @@ export default {
     WEBVIEW:"webView",
     PORFILE_EDIT:"profileEdit",
     LINKS:"links",
-    ADD_POST:"addPost"
+    ADD_POST:"addPost",
+    POST_DETAIL:"postDetail"
 }

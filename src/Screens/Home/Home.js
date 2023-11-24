@@ -1,35 +1,77 @@
-//import liraries
-import React, { Component, useCallback } from 'react';
-import { View, Text, StyleShee, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import strings from '../../constants/lang';
 import { FlashList } from "@shopify/flash-list";
-import WrapperContainer from '../../Components/WrapperContainer';
-import styles from './styles'
-import { moderateScale, moderateScaleVertical } from '../../styles/responsiveSize';
-import FastImageComp from '../../Components/FastImageComp';
-import imagePath from '../../constants/imagePath';
-import TextComp from '../../Components/TextComp';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Image, Pressable, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import FastImageComp from '../../Components/FastImageComp';
+import TextComp from '../../Components/TextComp';
+import WrapperContainer from '../../Components/WrapperContainer';
+import imagePath from '../../constants/imagePath';
+import actions from '../../redux/actions';
 import colors from '../../styles/colors';
+import { moderateScale, moderateScaleVertical } from '../../styles/responsiveSize';
+import styles from './styles';
+import navigationStrings from "../../Navigations/navigationStrings";
 
-const DATA = [
-    {
-        title: "First Item",
-    },
-    {
-        title: "Second Item",
-    },
-];
-
-
-
-// create a component
-const Home = () => {
+const Home = ({navigation}) => {
     const { selectedTheme } = useSelector(state => state?.appSetting)
 
+    const { userData } = useSelector(state => state?.auth)
+
+    console.log("userData", userData)
+
+    const [posts, setPosts] = useState([])
+
+    useEffect(() => {
+        userPosts()
+    }, [])
+
+    const userPosts = async () => {
+        try {
+            const res = await actions.getAllPost(`?limit=50&userId=${userData?._id}`)
+            console.log("res++++", res)
+
+
+            setPosts(res.data)
+        } catch (error) {
+            console.log("error raised", error)
+        }
+    }
+
+
+    const onPressHeart = async (item, index) => {
+
+        try {
+            const res = await actions.likeDislike({
+                postId: item?._id,
+                userId: userData?._id
+            })
+            const clonerArry = [...posts]
+
+            clonerArry[index].isLike = !item?.isLike
+            clonerArry[index].likeCount = item?.isLike ? clonerArry[index].likeCount + 1 : clonerArry[index].likeCount - 1
+
+            console.log("clonerArryclonerArry", clonerArry)
+
+            setPosts(clonerArry)
+
+            console.log("post like resres", res)
+        } catch (error) {
+            console.log("post like error", error)
+        }
+
+        console.log("itemitem", item)
+
+    }
+
+    const onPresPost = (item) =>{
+        navigation.navigate(navigationStrings.POST_DETAIL,{item: item})
+
+    }
     const renderItem = useCallback(({ item, index }) => {
         return (
-            <View style={styles.boxStyle}>
+            <Pressable
+            onPress={()=>onPresPost(item)}
+            style={styles.boxStyle}>
                 <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: "row", alignItems: 'center', flex: 1 }}>
                         <FastImageComp
@@ -38,16 +80,17 @@ const Home = () => {
                         />
                         <View>
                             <TextComp
-                                text='Gojo Satru'
+                                text={item?.user.fullName}
                                 style={styles.nameStyle}
                             />
-                            <TextComp
-                                text='Software developer'
+                            {!!item?.user?.bio ? <TextComp
+                                text={item?.user?.bio}
                                 style={{
                                     ...styles.bioStyle,
                                     color: selectedTheme == 'dark' ? colors.whiteColorOpacity40 : colors.blackOpacity70
                                 }}
-                            />
+                            /> : null}
+
                         </View>
                     </View>
                     <TouchableOpacity
@@ -57,17 +100,17 @@ const Home = () => {
                     </TouchableOpacity>
                 </View>
                 <FastImageComp
-                    url={'https://e0.pxfuel.com/wallpapers/24/87/desktop-wallpaper-gojo-satoru-electric-blue-art.jpg'}
+                    url={item?.media[0]?.url}
                     imageStyle={styles.postImage}
                 />
 
-                <TextComp
-                    text='Lorem ipsum pipsum'
+                {!!item?.description ? <TextComp
+                    text={item?.description}
                     style={styles.descStyle}
-                />
+                /> : null}
 
                 <TextComp
-                    text='1hr'
+                    text={item?.createdAt}
                     style={{
                         ...styles.descStyle,
                         marginVertical: moderateScaleVertical(12),
@@ -79,37 +122,60 @@ const Home = () => {
 
                     <View style={{ flexDirection: 'row' }}>
                         <TextComp
-                            text={`Comments ${20}`}
+                            text={`Comments ${item?.commentCount || 0}`}
                             style={{ ...styles.descStyle, marginRight: moderateScale(8) }}
                         />
 
                         <TextComp
-                            text={`Likes ${10}`}
+                            text={`Likes ${item?.likeCount || 0}`}
                             style={styles.descStyle}
                         />
+
+                        <TouchableOpacity
+                            onPress={() => onPressHeart(item, index)}
+                        >
+                            <Image tintColor={item?.isLike ? colors.redColor : colors.blackColor} source={imagePath.icHeart} />
+                        </TouchableOpacity>
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.7}
+
+
                     >
                         <Image source={imagePath.icShare} />
                     </TouchableOpacity>
 
                 </View>
 
+            </Pressable>
+        )
+    }, [posts])
+
+
+    const listEmptComp = () => {
+        return (
+            <View style={{ alignItems: "center", marginTop: 24 }}>
+                <TextComp
+                    text='No data found'
+                    style={{
+                        ...styles.notDataFound,
+                        color: selectedTheme == 'dark' ? colors.whiteColor : colors.blackColor
+                    }}
+                />
             </View>
         )
-    }, [])
-
-
+    }
 
     return (
         <WrapperContainer style={styles.container}>
             <View style={{ flex: 1, padding: moderateScale(8) }}>
                 <FlashList
-                    data={DATA}
+                    data={posts}
                     renderItem={renderItem}
                     estimatedItemSize={200}
                     ItemSeparatorComponent={() => <View style={{ height: moderateScale(20) }} />}
+                    ListEmptyComponent={listEmptComp}
+
                 />
             </View>
         </WrapperContainer>

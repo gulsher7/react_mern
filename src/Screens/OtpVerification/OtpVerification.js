@@ -10,13 +10,25 @@ import ButtonComp from '../../Components/ButtonComp';
 import HeaderComp from '../../Components/HeaderComp';
 import TextComp from '../../Components/TextComp';
 import OTPTextView from 'react-native-otp-textinput';
+import validator from '../../utils/validations'
+import { showError } from '../../utils/helperFunctions';
+import { otpVerify, userLogin } from '../../redux/actions/auth';
+import store from '../../redux/store';
+import { saveUserData } from '../../redux/reducers/auth';
+
+
+const {dispatch} = store;
 
 // create a component
-const OtpVerification = ({ navigation }) => {
+const OtpVerification = ({ navigation, route }) => {
 
     const [timer, setTimer] = useState(59);
+    const [isLoading, setLoading] = useState(false)
 
 
+    const { data } = route?.params || {}
+
+    // console.log("routeroute", data)
     useEffect(() => {
         const timeout = setTimeout(() => {
             if (timer > 0) setTimer(timer - 1)
@@ -37,8 +49,42 @@ const OtpVerification = ({ navigation }) => {
 
     };
 
-    const onResendCode = () =>{
+    const onResendCode = () => {
         setTimer(59)
+    }
+
+
+    const isValidData = () => {
+        const error = validator({
+            otp: otpInput
+        })
+        if (error) {
+            showError(error)
+            return false
+        }
+        return true
+    }
+
+    const onDone = async () => {
+
+        const checkValid = isValidData()
+        if (checkValid) {
+            setLoading(true)
+            let apiData = {
+                email: data.email,
+                otp: otpInput
+            }
+            console.log("sending api data",data)
+            try {
+                const res = await otpVerify(apiData, data.token)
+                setLoading(false)
+             
+            } catch (error) {
+                console.log("error in login api", error)
+                showError(error?.error)
+                setLoading(false)
+            }
+        }
     }
 
 
@@ -88,7 +134,9 @@ const OtpVerification = ({ navigation }) => {
                             }
 
                             <ButtonComp
-                                text={strings.LOGIN}
+                                text={strings.DONE}
+                                onPress={onDone}
+                                isLoading={isLoading}
                             />
                         </View>
                     </View>

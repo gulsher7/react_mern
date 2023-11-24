@@ -12,6 +12,7 @@ import imagePath from '../../constants/imagePath';
 import colors from '../../styles/colors';
 import navigationStrings from '../../Navigations/navigationStrings';
 import ImagePicker from 'react-native-image-crop-picker';
+import actions from '../../redux/actions';
 
 // create a component
 const CreatePost = ({ navigation }) => {
@@ -138,6 +139,30 @@ const CreatePost = ({ navigation }) => {
     }
 
     const onNext = () => {
+
+       
+        // let singleImage = selectedImages[0]
+
+        // console.log("selectedImages",singleImage)
+
+        // let formData = new FormData()
+
+        // formData.append('file',{
+        //     uri: singleImage.image.uri,
+        //     type: singleImage.image.extension,
+        //     name: singleImage.image.filename,
+        // })
+
+        // console.log("formdata created",formData)
+
+        // actions.fileUpload(formData).then((res)=>{
+        //      console.log("file uploaded succesfully...",res)
+        // }).catch((error)=>{
+        //     console.log("error raised",error)
+        // })
+
+        // return;
+        
 
         navigation.navigate(navigationStrings.ADD_POST, { selectedImages })
 

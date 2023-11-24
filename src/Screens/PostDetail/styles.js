@@ -7,6 +7,13 @@ import fontFamily from "../../styles/fontFamily";
 
 // define your styles
 const styles = StyleSheet.create({
+   bottomStyle: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: moderateScale(12),
+      paddingVertical: moderateScaleVertical(16)
+   },
    boxStyle: {
       backgroundColor: colors.gray2,
       borderRadius: moderateScale(8),

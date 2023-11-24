@@ -36,16 +36,20 @@ export default {
     VERIFY:"Verify",
     EDIT_PROFILE:"Edit Profile",
     SAVE:"Save",
+    DONE:"Done",
     BIO:"Bio",
     CHANGE_PASSWORD:"Chnage password",
     ADD_LINKS:"Add links",
     LINKS:"Links",
+    LOGOUT:"Logout",
     ENTER_OLD_PASSWORD:"Enter old password",
     TITLE:"title",
     URL:"link",
     CREATE_POST:"Create post",
     ADD_POST:"Add post",
     NEXT:"Next",
-    DESCRIPTION:"description..."
+    DESCRIPTION:"description...",
+    POST_DETAIL:"Post Detail",
+    NO_COMMENT_ADDED:"No comment added"
 
 }

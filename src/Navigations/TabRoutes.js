@@ -7,6 +7,7 @@ import * as Screens from '../Screens';
 import imagePath from '../constants/imagePath';
 import navigationStrings from './navigationStrings';
 
+
 const BottomTab = createBottomTabNavigator();
 
 const TabRoutes = (props) => {
@@ -19,12 +20,13 @@ const TabRoutes = (props) => {
             )}
             initialRouteName={navigationStrings.HOME}
 
+
             screenOptions={{
                 headerShown: false,
                 style: styles.customBottomtabsStyle,
                 tabBarActiveTintColor: colors.blackColor,
                 tabBarInactiveTintColor: 'gray',
-                tabBarStyle: {backgroundColor:colors.themeColor},
+                tabBarStyle: { backgroundColor: colors.themeColor },
                 tabBarShowLabel: false
             }}
 
@@ -35,7 +37,7 @@ const TabRoutes = (props) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Image style={{tintColor: focused?  colors.redColor: colors.whiteColor}} source={imagePath.firstInActiveIcon} />
+                            <Image style={{ tintColor: focused ? colors.redColor : colors.whiteColor }} source={imagePath.firstInActiveIcon} />
                         );
                     },
                 }}
@@ -46,7 +48,7 @@ const TabRoutes = (props) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Image style={{tintColor: focused?  colors.redColor: colors.whiteColor}} source={imagePath.secondInActiveIcon} />
+                            <Image style={{ tintColor: focused ? colors.redColor : colors.whiteColor }} source={imagePath.secondInActiveIcon} />
                         );
                     },
                 }}
@@ -57,9 +59,10 @@ const TabRoutes = (props) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Image style={{tintColor: focused?  colors.redColor: colors.whiteColor}} source={imagePath.thirdActiveIcon} />
+                            <Image style={{ tintColor: focused ? colors.redColor : colors.whiteColor }} source={imagePath.thirdActiveIcon} />
                         );
                     },
+                    unmountOnBlur: true
                 }}
             />
             <BottomTab.Screen
@@ -68,7 +71,7 @@ const TabRoutes = (props) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Image style={{tintColor: focused?  colors.redColor: colors.whiteColor}} source={imagePath.fourthActiveIcon} />
+                            <Image style={{ tintColor: focused ? colors.redColor : colors.whiteColor }} source={imagePath.fourthActiveIcon} />
                         );
                     },
                 }}
@@ -79,7 +82,7 @@ const TabRoutes = (props) => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Image style={{tintColor: focused?  colors.redColor: colors.whiteColor}} source={imagePath.fifthActiveIcon} />
+                            <Image style={{ tintColor: focused ? colors.redColor : colors.whiteColor }} source={imagePath.fifthActiveIcon} />
                         );
                     },
                 }}

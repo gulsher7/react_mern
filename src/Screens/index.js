@@ -11,3 +11,4 @@ export {default as Webview} from './Webview/Webview';
 export {default as ProfileEdit} from './ProfileEdit/ProfileEdit';
 export {default as Links} from './Links/Links';
 export {default as AddPost} from './AddPost/AddPost';
+export {default as PostDetail} from './PostDetail/PostDetail';

@@ -28,6 +28,8 @@ export default {
     icAdd: require('../assets/images/ic_add2.png'),
     icCamera: require('../assets/images/camera.png'),
     icCross: require('../assets/images/ic_cross.png'),
+    icHeart: require('../assets/images/activeHeart.png'),
+    icSend: require('../assets/images/ic_send.png'),
 
   
   };

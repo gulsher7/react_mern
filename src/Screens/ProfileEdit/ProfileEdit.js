@@ -16,8 +16,12 @@ import TextInputComp from '../../Components/TextInputComp';
 import MultiTextInput from '../../Components/MultiTextInput';
 import ButtonComp from '../../Components/ButtonComp';
 import ModalComp from '../../Components/ModalComp';
+import store from '../../redux/store';
+import { saveUserData } from '../../redux/reducers/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showError } from '../../utils/helperFunctions';
 
-
+const {dispatch} = store
 // create a component
 const ProfileEdit = ({ navigation }) => {
     const { selectedTheme } = useSelector(state => state?.appSetting)
@@ -31,10 +35,20 @@ const ProfileEdit = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [secureText, setSecureText] = useState(true)
     const [showPassModal, setShowPassModal] = useState(false)
-   
+
 
     const onSave = () => {
         alert("dfdf")
+    }
+
+    const onLogout = () =>{
+        AsyncStorage.removeItem('userData').then((res)=>{
+            console.log("user remove suceessfully..!!")
+            dispatch(saveUserData({}))
+        }).catch((error)=>{
+            showError("Data not found")
+        })
+
     }
 
     return (
@@ -99,6 +113,18 @@ const ProfileEdit = ({ navigation }) => {
                             backgroundColor: 'transparent',
                             borderWidth: 0.5,
                             borderColor: isDark ? colors.whiteColor : colors.blackColor,
+                            marginTop: moderateScaleVertical(16)
+                        }}
+                    />
+
+
+                    <ButtonComp
+                        text={strings.LOGOUT}
+                        onPress={onLogout}
+                        style={{
+                            backgroundColor: 'transparent',
+                            borderWidth: 0.5,
+                            borderColor: colors.redColor,
                             marginTop: moderateScaleVertical(16)
                         }}
                     />

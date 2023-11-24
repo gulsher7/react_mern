@@ -48,6 +48,10 @@ const Login = ({navigation}) => {
                     password})
                     console.log("login api res",res)
                     setLoading(false)
+                    if(!!res.data && !res?.data?.validOTP){
+                        navigation.navigate(navigationStrings.OTP_VERIFICATION,{data: res.data})
+                        return;
+                    }
             } catch (error) {
                 console.log("error in login api",error)
                 showError(error?.error)

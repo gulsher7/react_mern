@@ -23,6 +23,7 @@ export default function (data) {
         userName,
         email, 
         password,
+        otp
      } = data;
 
      if (userName !== undefined) {
@@ -72,4 +73,17 @@ export default function (data) {
             }
         }
     }
+
+    if (otp !== undefined) {
+        let emptyValidationText = checkEmpty(otp, "Otp");
+        if (emptyValidationText !== '') {
+            return emptyValidationText
+        }else{
+            let minLenghtValidation = checkMinLength(otp, 4, "Otp");
+            if(minLenghtValidation !== ''){
+                return minLenghtValidation;
+            }
+        }
+    }
+
 }

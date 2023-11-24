@@ -6,6 +6,8 @@ import TabRoutes from './TabRoutes';
 export default function (Stack) {
     return (
         <>
+
+
             <Stack.Screen
                 name={navigationStrings.TAB_ROUTES}
                 component={TabRoutes}
@@ -24,11 +26,17 @@ export default function (Stack) {
                 options={{ headerShown: false }}
 
             />
-              <Stack.Screen
+
+            <Stack.Screen
+                name={navigationStrings.POST_DETAIL}
+                component={Screens.PostDetail}
+                options={{ headerShown: false }}
+
+            />
+            <Stack.Screen
                 name={navigationStrings.ADD_POST}
                 component={Screens.AddPost}
                 options={{ headerShown: false }}
-
             />
 
         </>

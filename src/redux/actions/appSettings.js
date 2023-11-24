@@ -1,6 +1,7 @@
 import strings from '../../constants/lang';
 import { storeData } from '../../utils/helperFunctions';
 import { changeLang,changeTheme } from '../reducers/appSettings';
+import { saveUserData } from '../reducers/auth';
 import store from '../store';
 const { dispatch } = store;
 
@@ -25,3 +26,4 @@ export const changeAppTheme = (data) => {
       console.log("error during store data")
     })
 };
+

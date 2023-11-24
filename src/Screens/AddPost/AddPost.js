@@ -11,12 +11,20 @@ import { useSelector } from 'react-redux';
 import MultiTextInput from '../../Components/MultiTextInput';
 import strings from '../../constants/lang';
 import ButtonComp from '../../Components/ButtonComp';
+import actions from '../../redux/actions';
 
 
 // create a component
 const AddPost = ({ navigation, route }) => {
 
     const { selectedTheme } = useSelector(state => state?.appSetting)
+
+    const { userData } = useSelector(state => state?.auth || {})
+
+
+
+    console.log("userDatausersData", userData)
+
 
     const isDark = selectedTheme == 'dark'
 
@@ -26,6 +34,47 @@ const AddPost = ({ navigation, route }) => {
     const [text, setText] = useState('')
 
     const onSelect = () => {
+
+    }
+
+
+    const onSave = async () => {
+        if (images.length == 0) {
+            alert("Please upload at least one photo")
+            return;
+        }
+
+        const formData = new FormData()
+
+     
+
+        formData.append("userId", userData?._id)
+        formData.append("description", text)
+
+
+        console.log("iamges conosle",images)
+        images.forEach((val, i) => {
+            formData.append('file',{
+                uri: val?.image?.uri || val?.image?.path,
+                type: "video/mp4",
+                name: val.image.filename,
+            })
+        })
+
+        console.log("formDataformData",formData)
+
+
+     
+
+        try {
+            const res = await actions.createPost(formData)
+
+            console.log("api res+++++",res)
+
+        } catch (error) {
+            console.log("error raised", error)
+        }
+
 
     }
 
@@ -133,13 +182,14 @@ const AddPost = ({ navigation, route }) => {
                         placeholder={strings.DESCRIPTION}
                         onChangeText={(value) => setText(value)}
                         multiline={true}
-                        inputStyle={{marginTop:moderateScaleVertical(24)}}
+                        inputStyle={{ marginTop: moderateScaleVertical(24) }}
                     />
                 </View>
 
 
                 <ButtonComp
                     text={strings.SAVE}
+                    onPress={onSave}
                 />
 
             </View>
