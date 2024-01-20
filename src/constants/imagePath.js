@@ -30,6 +30,7 @@ export default {
     icCross: require('../assets/images/ic_cross.png'),
     icHeart: require('../assets/images/activeHeart.png'),
     icSend: require('../assets/images/ic_send.png'),
-
+    icChat: require('../assets/images/chatIcon.png'),
+    icGroup: require('../assets/images/icGroup.png'),
   
   };

@@ -103,11 +103,11 @@ const PostDetail = ({ navigation, route }) => {
                         />
                         <View>
                             <TextComp
-                                text={item?.user.fullName}
+                                text={item?.user?.fullName || item?.userId?.fullName}
                                 style={styles.nameStyle}
                             />
-                            {!!item?.user?.bio ? <TextComp
-                                text={item?.user?.bio}
+                            {!!item?.user?.bio || item?.userId?.bio  ? <TextComp
+                                text={item?.user?.bio || item?.userId?.bio }
                                 style={{
                                     ...styles.bioStyle,
                                     color: selectedTheme == 'dark' ? colors.whiteColorOpacity40 : colors.blackOpacity70

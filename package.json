@@ -23,6 +23,7 @@
     "react-native": "0.72.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-flash-message": "^0.4.2",
+    "react-native-gifted-chat": "^2.4.0",
     "react-native-image-crop-picker": "^0.40.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-localization": "^2.3.2",
@@ -34,7 +35,8 @@
     "react-native-webview": "^13.3.1",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

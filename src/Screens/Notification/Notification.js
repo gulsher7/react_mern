@@ -53,7 +53,7 @@ const Notification = () => {
         <WrapperContainer>
             <View style={{ flex: 1 }}>
                 <HeaderComp
-                    isLeftImage={false}
+            
                     leftText='Notifications'
                     style={{ marginBottom: moderateScaleVertical(16) }}
 

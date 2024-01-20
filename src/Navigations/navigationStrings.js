@@ -13,5 +13,7 @@ export default {
     PORFILE_EDIT:"profileEdit",
     LINKS:"links",
     ADD_POST:"addPost",
-    POST_DETAIL:"postDetail"
+    POST_DETAIL:"postDetail",
+    CHATS:"chats",
+    MESSAGES:"Messages"
 }

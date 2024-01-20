@@ -38,6 +38,16 @@ export default function (Stack) {
                 component={Screens.AddPost}
                 options={{ headerShown: false }}
             />
+              <Stack.Screen
+                name={navigationStrings.CHATS}
+                component={Screens.Chats}
+                options={{ headerShown: false }}
+            />
+                <Stack.Screen
+                name={navigationStrings.MESSAGES}
+                component={Screens.Messages}
+                options={{ headerShown: false }}
+            />
 
         </>
     );

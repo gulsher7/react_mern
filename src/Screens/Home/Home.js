@@ -11,8 +11,10 @@ import colors from '../../styles/colors';
 import { moderateScale, moderateScaleVertical } from '../../styles/responsiveSize';
 import styles from './styles';
 import navigationStrings from "../../Navigations/navigationStrings";
+import HeaderComp from "../../Components/HeaderComp";
+import socketServices from "../../utils/sockertService";
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const { selectedTheme } = useSelector(state => state?.appSetting)
 
     const { userData } = useSelector(state => state?.auth)
@@ -20,6 +22,11 @@ const Home = ({navigation}) => {
     console.log("userData", userData)
 
     const [posts, setPosts] = useState([])
+
+
+    useEffect(()=>{
+            socketServices.initialzeSocekt()
+    },[])
 
     useEffect(() => {
         userPosts()
@@ -63,15 +70,29 @@ const Home = ({navigation}) => {
 
     }
 
-    const onPresPost = (item) =>{
-        navigation.navigate(navigationStrings.POST_DETAIL,{item: item})
+    const onPresPost = (item) => {
+        navigation.navigate(navigationStrings.POST_DETAIL, { item: item })
 
     }
+
+
+    const onPressMessage = async (item) => {
+
+        try {
+            const res = await actions.createPrivateChat({
+                userId: item?.user._id
+            })
+            console.log("createPrivateChat res======", res)
+        } catch (error) {
+
+        }
+    }
+
     const renderItem = useCallback(({ item, index }) => {
         return (
             <Pressable
-            onPress={()=>onPresPost(item)}
-            style={styles.boxStyle}>
+                onPress={() => onPresPost(item)}
+                style={styles.boxStyle}>
                 <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: "row", alignItems: 'center', flex: 1 }}>
                         <FastImageComp
@@ -91,6 +112,15 @@ const Home = ({navigation}) => {
                                 }}
                             /> : null}
 
+                            {userData?._id !== item.user._id ? <TouchableOpacity
+                                onPress={() => onPressMessage(item)}
+                            >
+                                <TextComp
+                                    text={'Message'}
+                                    style={styles.descStyle}
+                                />
+                            </TouchableOpacity> : null}
+
                         </View>
                     </View>
                     <TouchableOpacity
@@ -103,6 +133,7 @@ const Home = ({navigation}) => {
                     url={item?.media[0]?.url}
                     imageStyle={styles.postImage}
                 />
+
 
                 {!!item?.description ? <TextComp
                     text={item?.description}
@@ -169,6 +200,12 @@ const Home = ({navigation}) => {
     return (
         <WrapperContainer style={styles.container}>
             <View style={{ flex: 1, padding: moderateScale(8) }}>
+                <HeaderComp
+                    isLeftImage={false}
+                    rightImage={imagePath.icChat}
+                    onPressRight={() => navigation.navigate(navigationStrings.CHATS)}
+
+                />
                 <FlashList
                     data={posts}
                     renderItem={renderItem}

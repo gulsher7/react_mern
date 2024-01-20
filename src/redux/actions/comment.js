@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ALL_POSTS, CREATE_POST, DELETE_COMMENT, LIKE_DISLIKE, POST_COMMENTS, POST_LIKES } from '../../config/urls';
+import { ADD_COMMENT, DELETE_COMMENT, POST_COMMENTS } from '../../config/urls';
 import { apiDelete, apiGet, apiPost } from '../../utils/utils';
 
 
