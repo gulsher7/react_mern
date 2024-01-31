@@ -24,9 +24,9 @@ const Home = ({ navigation }) => {
     const [posts, setPosts] = useState([])
 
 
-    useEffect(()=>{
-            socketServices.initialzeSocekt()
-    },[])
+    useEffect(() => {
+        socketServices.initialzeSocekt(userData?._id)
+    }, [])
 
     useEffect(() => {
         userPosts()

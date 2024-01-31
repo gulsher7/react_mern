@@ -12,7 +12,6 @@ import { moderateScale, moderateScaleVertical, textScale, width } from '../../st
 import actions from '../../redux/actions';
 import imagePath from '../../constants/imagePath';
 import navigationStrings from '../../Navigations/navigationStrings';
-import { useFocusEffect } from '@react-navigation/native';
 import socketServices from '../../utils/sockertService';
 
 
@@ -24,8 +23,29 @@ const Messages = ({ navigation }) => {
 
   useEffect(()=>{
     fetchChats()
+
+    socketServices.emit('join_chat', userData?._id)
+    socketServices.on('new_chat', (values)=>{
+        // console.log("datadatadata",data)
+        setData(previousMessages => {
+            let cloneArry = JSON.parse(JSON.stringify(previousMessages))
+            const index = cloneArry.findIndex(item => item._id == values._id) 
+            if(index !== -1) {
+                cloneArry.splice(index, 1)
+            }
+            cloneArry.unshift(values)
+            return cloneArry
+        })
+    })
+
+    return () =>{
+        socketServices.removeListener('new_chat')
+        socketServices.emit('leave_chat', userData?._id)
+    }
+
   },[])
     
+ 
 
     const fetchChats = async () => {
         try {
