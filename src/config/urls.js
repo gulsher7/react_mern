@@ -10,6 +10,7 @@ export const ALL_POSTS = getApiURL('/allPost');
 export const MY_POSTS = getApiURL('/myPosts');
 export const FILE_UPLOAD = getApiURL('/fileUpload');
 export const USER_DETAILS = getApiURL('/fetchUserDetails');
+export const FETCH_USERS_BY_IDS = getApiURL('/fetchUsersByIds');
 
 
 //post like_dislike apis
