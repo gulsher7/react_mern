@@ -1,5 +1,5 @@
 //import liraries
-import { FlashList } from '@shopify/flash-list';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -7,13 +7,12 @@ import FastImageComp from '../../Components/FastImageComp';
 import HeaderComp from '../../Components/HeaderComp';
 import TextComp from '../../Components/TextComp';
 import WrapperContainer from '../../Components/WrapperContainer';
-import colors from '../../styles/colors';
-import { moderateScale, moderateScaleVertical, textScale, width } from '../../styles/responsiveSize';
-import actions from '../../redux/actions';
-import imagePath from '../../constants/imagePath';
 import navigationStrings from '../../Navigations/navigationStrings';
+import imagePath from '../../constants/imagePath';
+import actions from '../../redux/actions';
+import colors from '../../styles/colors';
+import { moderateScale, moderateScaleVertical, textScale } from '../../styles/responsiveSize';
 import socketServices from '../../utils/sockertService';
-
 
 const Messages = ({ navigation }) => {
     const { selectedTheme } = useSelector(state => state?.appSetting)
@@ -21,31 +20,40 @@ const Messages = ({ navigation }) => {
     const { userData } = useSelector(state => state?.auth)
 
 
-  useEffect(()=>{
-    fetchChats()
 
-    socketServices.emit('join_chat', userData?._id)
-    socketServices.on('new_chat', (values)=>{
-        // console.log("datadatadata",data)
-        setData(previousMessages => {
-            let cloneArry = JSON.parse(JSON.stringify(previousMessages))
-            const index = cloneArry.findIndex(item => item._id == values._id) 
-            if(index !== -1) {
-                cloneArry.splice(index, 1)
-            }
-            cloneArry.unshift(values)
-            return cloneArry
-        })
-    })
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchChats()
+        }, [])
+    );
 
-    return () =>{
+
+    useFocusEffect(
+        React.useCallback(() => {
+            socketServices.emit('join_chat', userData?._id)
+            socketServices.on('new_chat', (values) => {
+
+                setData(previousMessages => {
+                    let cloneArry = JSON.parse(JSON.stringify(previousMessages))
+                    const index = cloneArry.findIndex(item => item._id == values._id)
+                    if (index !== -1) {
+                        cloneArry.splice(index, 1)
+                    }
+                    cloneArry.unshift(values)
+                    return cloneArry
+                })
+            })
+            return () => removerListerns()
+
+        }, [])
+    );
+
+
+
+    const removerListerns = () => {
         socketServices.removeListener('new_chat')
         socketServices.emit('leave_chat', userData?._id)
     }
-
-  },[])
-    
- 
 
     const fetchChats = async () => {
         try {
@@ -58,8 +66,12 @@ const Messages = ({ navigation }) => {
     }
 
     const onPressItem = (item, type) => {
+        // removerListerns()
         navigation.navigate(navigationStrings.MESSAGES, {
-            item: {...item, name:  type == 'group' ? item?.chatName: item?.users[0]?.userName  }
+            roomId: item._id,
+            roomName: type == 'group' ? item?.chatName : item?.users.filter(val => val._id !== userData._id)[0].userName,
+            receiverIds: type == 'group' ? item?.users.filter((val) => val?._id !== userData?._id).map((val,i)=> val._id) : item?.users.filter(val => val._id !== userData._id)[0]._id,
+            type
         })
     }
 
@@ -69,7 +81,7 @@ const Messages = ({ navigation }) => {
             return (
                 <>
                     <TouchableOpacity
-                    onPress={()=>onPressItem(item, 'group')}
+                        onPress={() => onPressItem(item, 'group')}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -90,6 +102,12 @@ const Messages = ({ navigation }) => {
                             />
 
                             <TextComp
+                                text={!!item?.latestMessage ? item?.latestMessage : ""}
+                                style={{ fontSize: textScale(16) }}
+                            />
+
+
+                            <TextComp
                                 text={item?.updatedAt}
                                 style={{
                                     marginVertical: moderateScaleVertical(4),
@@ -105,7 +123,7 @@ const Messages = ({ navigation }) => {
 
         return (
             <TouchableOpacity
-            onPress={()=>onPressItem(item, 'private')}
+                onPress={() => onPressItem(item, 'private')}
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -117,12 +135,19 @@ const Messages = ({ navigation }) => {
                     imageStyle={styles.imgStyle}
                 />
                 <View style={{ marginHorizontal: moderateScale(16) }}>
-                    <TextComp
-                        text={item.users[0]?.userName}
-                        style={{ fontSize: textScale(16) }}
-                    >
-                        {!!item?.latestMessage ? <Text style={{ color: colors.redColor }}>{item?.latestMessage}</Text> : null}
-                    </TextComp>
+                    {item.users.map((val, i) => {
+                        if(val._id !== userData?._id){
+                            return (
+                                <TextComp
+                                    text={val?.userName}
+                                    style={{ fontSize: textScale(16) }}
+                                >
+                                    {!!item?.latestMessage ? <Text style={{ color: colors.redColor }}>{item?.latestMessage}</Text> : null}
+                                </TextComp>
+                            )
+                        }
+                    })}
+
                     <TextComp
                         text={item?.updatedAt}
                         style={{
@@ -136,7 +161,7 @@ const Messages = ({ navigation }) => {
         )
     }
 
-    console.log("my chata data++++++++",data)
+    console.log("my chata data++++++++", data)
 
     return (
         <WrapperContainer>
@@ -145,6 +170,7 @@ const Messages = ({ navigation }) => {
 
                     leftText='Your Chats'
                     style={{ marginBottom: moderateScaleVertical(16) }}
+                    rightText={userData?.userName}
 
                 />
                 <FlatList
