@@ -9,6 +9,8 @@ export const CREATE_POST = getApiURL('/createPost');
 export const ALL_POSTS = getApiURL('/allPost');
 export const MY_POSTS = getApiURL('/myPosts');
 export const FILE_UPLOAD = getApiURL('/fileUpload');
+export const USER_DETAILS = getApiURL('/fetchUserDetails');
+
 
 //post like_dislike apis
 export const LIKE_DISLIKE = getApiURL('/likeDislike');

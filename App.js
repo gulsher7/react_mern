@@ -1,63 +1,73 @@
+//import liraries
+import React, { useEffect } from 'react';
+import Routes from './src/Navigations/Routes';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
+import { changeLang } from './src/redux/reducers/appSettings';
+import strings from './src/constants/lang';
+import { changeAppTheme, changeLanguage, storeUserData } from './src/redux/actions/appSettings';
+import { getData } from './src/utils/helperFunctions';
+import FlashMessage from "react-native-flash-message";
+import fontFamily from './src/styles/fontFamily';
+import { textScale } from './src/styles/responsiveSize';
+import { saveUserData } from './src/redux/reducers/auth';
 
-import React, { Component, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-import axios from 'axios';
-
-// Function to encode form data
-const encodeFormData = (data) => {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-    .join('&');
-};
-
+const {dispatch} = store
 
 const App = () => {
 
- 
-const sendData = async () => {
-  // Define your data
-  const data = new URLSearchParams();
-  data.append('Username', 'NHLAMULOL');
-  data.append('Password', 'Camelsa@123');
-  data.append('grant_type', 'password');
-
-  try {
-    // Make a POST request using Axios
-    const response = await axios.post('http://156.38.213.42:7003/token', data.toString(), {
-      headers: {   
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-
-    console.log('Response:', response.data);
-  } catch (error) {
-    console.log('Error:', error);
-  }
-};
-
-
   useEffect(() => {
-
-    sendData()
-
+    initiateLang()
+    initiateTheme()
+    initUser()
   }, [])
+
+
+  const initUser = async() =>{
+    try {
+      let data = await getData('userData')
+      if (!!data) {
+        dispatch(saveUserData(JSON.parse(data)));
+      }
+    } catch (error) {
+      console.log("no data found")
+    }
+  }
+  const initiateTheme = async () => {
+    try {
+      let myTheme = await getData('theme')
+      if (!!myTheme) {
+        changeAppTheme(myTheme)
+      }
+    } catch (error) {
+      console.log("no data found")
+    }
+  }
+
+
+  const initiateLang = async () => {
+    try {
+      let myLang = await getData('language')
+      if (!!myLang) {
+        changeLanguage(myLang)
+      }
+    } catch (error) {
+      console.log("no data found")
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>App</Text>
-    </View>
+    <Provider store={store}>
+      <Routes />
+      <FlashMessage
+        position={'top'}
+        titleStyle={{
+          fontFamily:fontFamily.medium,
+          fontSize: textScale(14)
+        }}
+      />
+    </Provider>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
-});
-
-//make this component available to the app
 export default App;

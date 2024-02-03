@@ -19,6 +19,7 @@
     "@shopify/flash-list": "^1.5.0",
     "axios": "^1.5.1",
     "is_js": "^0.9.0",
+    "moment": "^2.30.1",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-fast-image": "^8.6.3",

@@ -11,12 +11,12 @@ class WSService {
                 transports: ["websocket"]
                 
             })
-
             console.log("initialzing socket",this.socket)
         
             this.socket.on("connect", (data)=>{
                 console.log("=== socket connected ===")
-                this.socket.emit("app_open",{userId: userId})
+                this.socket.emit('user_online', {userId})
+
             })
             this.socket.on("disconnect", (data)=>{
                 console.log("=== socket disconnected ===")

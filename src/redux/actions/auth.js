@@ -1,6 +1,6 @@
-import { FILE_UPLOAD, LOGIN_API, OTP_VERIFY, SIGNUP_API } from '../../config/urls';
+import { FILE_UPLOAD, LOGIN_API, OTP_VERIFY, SIGNUP_API, USER_DETAILS } from '../../config/urls';
 import { storeData } from '../../utils/helperFunctions';
-import { apiPost } from '../../utils/utils';
+import { apiGet, apiPost } from '../../utils/utils';
 import { saveUserData } from '../reducers/auth';
 import store from '../store';
 import types from '../types';
@@ -33,7 +33,7 @@ export const otpVerify = (data, token = null) => {
   return new Promise((resolve, reject) => {
     apiPost(OTP_VERIFY, data).then((res) => {
       if (!!res?.data) {
-        let addToken = {...res.data, token}
+        let addToken = { ...res.data, token }
         storeData('userData', addToken).then((value) => {
           console.log("im here")
           dispatch(saveUserData(addToken))
@@ -58,6 +58,8 @@ export const userSignup = (data) => {
 export const fileUpload = (data) => {
   return apiPost(FILE_UPLOAD, data)
 };
+
+
 
 
 export function logout() {

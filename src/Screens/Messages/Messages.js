@@ -8,6 +8,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { useSelector } from 'react-redux';
 import actions from '../../redux/actions';
 import socketServices from '../../utils/sockertService';
+import moment from 'moment';
 
 // create a component
 const limit = 50
@@ -15,13 +16,14 @@ const Messages = ({ navigation, route }) => {
     const item = route.params.item
 
     const { userData } = useSelector(state => state?.auth)
-
     const [messages, setMessages] = useState([])
-    const [isUserOnline, setIsUserOnline] = useState(false);
-
     const [page, setPage] = useState(1)
-
     const [isTyping, setIsTyping] = useState(false)
+
+    const [receiverFullDetails, setReceriverFullDetails] = useState({
+        online: false,
+        lastSeen: null
+    })
 
     const roomId = item?._id
     const roomName = item?.name
@@ -30,7 +32,7 @@ const Messages = ({ navigation, route }) => {
 
     useEffect(() => {
         apiHit()
-        socketServices.emit('app_open',{userId: userData?._id})
+        fetchUserDetails()
     }, [])
 
     const leaveRoom = () => {
@@ -38,52 +40,61 @@ const Messages = ({ navigation, route }) => {
         navigation.goBack()
     }
 
+    const fetchUserDetails = async () => {
+        try {
+            const res = await actions.getUserDetailsById(`?userId=${receiverIds}`)
+            console.log("+++receiver Details+++", res)
+            if (!!res.data) {
+                setReceriverFullDetails({
+                    online: !!res.data?.online ? res?.data?.online : false,
+                    lastSeen: !!res.data?.lastSeen ? res?.data?.lastSeen : null,
+                })
+            }
+
+        } catch (error) {
+            console.log("error raised during fetch details", error)
+        }
+    }
+
     useEffect(() => {
 
         socketServices.emit("join_room", roomId)
 
         socketServices.on('send_message', (data) => {
-            console.log("send_message", data)
-
             setMessages(previousMessages =>
                 GiftedChat.append(previousMessages, data),
             )
-
         })
+
+        socketServices.on('user_online', ({userId, online, lastSeen})=>{
+            if(userId == receiverIds){
+                setReceriverFullDetails({
+                    online: online,
+                    lastSeen: !!lastSeen ? lastSeen: null
+                })
+            }
+        })
+
         return () => {
             socketServices.removeListener('send_message')
+            socketServices.removeListener('user_online')
             socketServices.emit('leave_room', roomId)
         }
     }, [])
 
 
     useEffect(() => {
-
         socketServices.on('user_typing', ({ userId }) => {
             setIsTyping(userData._id !== userId)
         })
-
         socketServices.on('user_stopped', ({ userId }) => {
             setIsTyping(false)
         })
-
-        // Listen for the user_online event from the server
-        socketServices.on('user_online', ({ userId, isOnline, activeUsers }) => {
-            console.log("activeUsersactiveUsers",activeUsers)
-            alert(`is ${userId} online ? : ${isOnline}`)
-            if (userId === receiverIds) {
-                setIsUserOnline(isOnline);
-            }
-        });
-
         return () => {
             socketServices.removeListener('user_typing')
             socketServices.removeListener('user_stopped')
-            socketServices.removeListener('user_online')
         }
-
     }, [userData?._id, isTyping])
-
 
 
     const apiHit = async () => {
@@ -96,8 +107,6 @@ const Messages = ({ navigation, route }) => {
             console.log("error raised", error)
         }
     }
-
-
 
     const onSend = useCallback((messages = []) => {
         stopTyping()
@@ -156,10 +165,13 @@ const Messages = ({ navigation, route }) => {
         <WrapperContainer>
             <View style={{ flex: 1 }}>
                 <HeaderComp
-
                     leftText={roomName}
                     style={{ marginBottom: moderateScaleVertical(16) }}
                     onPressLeft={leaveRoom}
+                    rightText={!!receiverFullDetails?.online ? 'Online' : `Last seen: ${moment(receiverFullDetails?.lastSeen).calendar()}`}
+                    rightTextStyle={{
+                        color: receiverFullDetails?.online ? 'green' : 'white'
+                    }}
                 />
                 <GiftedChat
                     messages={messages}
@@ -181,15 +193,5 @@ const Messages = ({ navigation, route }) => {
     );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
-});
 
-//make this component available to the app
 export default Messages;
