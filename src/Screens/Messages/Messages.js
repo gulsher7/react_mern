@@ -9,30 +9,35 @@ import { useSelector } from 'react-redux';
 import actions from '../../redux/actions';
 import socketServices from '../../utils/sockertService';
 import moment from 'moment';
+import GroupImage from '../../Components/GroupImage';
 
 // create a component
 const limit = 50
 const Messages = ({ navigation, route }) => {
-    const item = route.params.item
+    const { roomId, roomName, receiverIds, type } = route.params
 
     const { userData } = useSelector(state => state?.auth)
     const [messages, setMessages] = useState([])
     const [page, setPage] = useState(1)
     const [isTyping, setIsTyping] = useState(false)
+    
+    const [roomUsers, setRoomUsers] = useState([])
 
     const [receiverFullDetails, setReceriverFullDetails] = useState({
         online: false,
         lastSeen: null
     })
 
-    const roomId = item?._id
-    const roomName = item?.name
-    const receiverIds = item.users[0]?._id
-    console.log("item+++", item)
+    // console.log("receiverIdsreceiverIds",receiverIds)
+
 
     useEffect(() => {
         apiHit()
-        fetchUserDetails()
+        if (type == "private") {
+            fetchUserDetails()
+        }else{
+            fetchRoomUsersByIds()
+        }
     }, [])
 
     const leaveRoom = () => {
@@ -50,7 +55,18 @@ const Messages = ({ navigation, route }) => {
                     lastSeen: !!res.data?.lastSeen ? res?.data?.lastSeen : null,
                 })
             }
+        } catch (error) {
+            console.log("error raised during fetch details", error)
+        }
+    }
 
+    const fetchRoomUsersByIds = async () => {
+        try {
+            const res = await actions.getUsersByIds(`?userIds=${receiverIds}`)
+            console.log("+++ res getUsersByIds+++", res)
+
+                setRoomUsers(res?.data)
+         
         } catch (error) {
             console.log("error raised during fetch details", error)
         }
@@ -66,18 +82,22 @@ const Messages = ({ navigation, route }) => {
             )
         })
 
-        socketServices.on('user_online', ({userId, online, lastSeen})=>{
-            if(userId == receiverIds){
-                setReceriverFullDetails({
-                    online: online,
-                    lastSeen: !!lastSeen ? lastSeen: null
-                })
-            }
-        })
+        if (type == 'private') {
+            socketServices.on('user_online', ({ userId, online, lastSeen }) => {
+                if (userId == receiverIds) {
+                    setReceriverFullDetails({
+                        online: online,
+                        lastSeen: !!lastSeen ? lastSeen : null
+                    })
+                }
+            })
+        }
 
         return () => {
             socketServices.removeListener('send_message')
-            socketServices.removeListener('user_online')
+            if (type == 'private') {
+                socketServices.removeListener('user_online')
+            }
             socketServices.emit('leave_room', roomId)
         }
     }, [])
@@ -100,7 +120,7 @@ const Messages = ({ navigation, route }) => {
     const apiHit = async () => {
         try {
             const res = await actions.myMessages(`?chatId=${roomId}&limit=${limit}&page=${page}`)
-            console.log("myMessages res++++", res)
+            // console.log("myMessages res++++", res)
             setMessages(res.data)
 
         } catch (error) {
@@ -113,10 +133,10 @@ const Messages = ({ navigation, route }) => {
         actions.sendMessage({
             chatId: roomId,
             text: messages[0]?.text,
-            receiverId: receiverIds
+            receiverId: receiverIds,
+            type
         }).then((res) => {
             console.log("success...!!", res)
-
             socketServices.emit('send_message', {
                 ...res.data,
                 chatId: roomId,
@@ -127,7 +147,6 @@ const Messages = ({ navigation, route }) => {
                     userName: userData?.userName
                 }
             })
-
         }).catch((error) => {
             console.log("message not send")
         })
@@ -164,15 +183,26 @@ const Messages = ({ navigation, route }) => {
     return (
         <WrapperContainer>
             <View style={{ flex: 1 }}>
+
+                <View style={styles.headerStyle}>
                 <HeaderComp
                     leftText={roomName}
-                    style={{ marginBottom: moderateScaleVertical(16) }}
+                    style={{
+                        paddingHorizontal: 0
+                    }}
                     onPressLeft={leaveRoom}
-                    rightText={!!receiverFullDetails?.online ? 'Online' : `Last seen: ${moment(receiverFullDetails?.lastSeen).calendar()}`}
+                    rightText={type == "group" ? "" : !!receiverFullDetails?.online ? 'Online' : `Last seen: ${moment(receiverFullDetails?.lastSeen).calendar()}`}
                     rightTextStyle={{
                         color: receiverFullDetails?.online ? 'green' : 'white'
                     }}
                 />
+
+                    <GroupImage
+                    data={roomUsers}
+                    />
+                    </View>
+
+
                 <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}
@@ -193,5 +223,13 @@ const Messages = ({ navigation, route }) => {
     );
 };
 
-
+const styles = StyleSheet.create({
+    headerStyle: {
+        flexDirection:"row",
+        alignItems:'center',  
+        marginBottom: moderateScaleVertical(16),
+        justifyContent:'space-between',
+        marginHorizontal:moderateScaleVertical(16)
+    }
+})
 export default Messages;
