@@ -45,6 +45,8 @@ target 'IDev' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
   target 'IDevTests' do
     inherit! :complete
     # Pods for testing

@@ -1,16 +1,15 @@
 //import liraries
 import React, { useEffect } from 'react';
-import Routes from './src/Navigations/Routes';
-import { Provider } from 'react-redux';
-import store from './src/redux/store';
-import { changeLang } from './src/redux/reducers/appSettings';
-import strings from './src/constants/lang';
-import { changeAppTheme, changeLanguage, storeUserData } from './src/redux/actions/appSettings';
-import { getData } from './src/utils/helperFunctions';
 import FlashMessage from "react-native-flash-message";
+import { Provider } from 'react-redux';
+import Routes from './src/Navigations/Routes';
+import { changeAppTheme, changeLanguage } from './src/redux/actions/appSettings';
+import { saveUserData } from './src/redux/reducers/auth';
+import store from './src/redux/store';
 import fontFamily from './src/styles/fontFamily';
 import { textScale } from './src/styles/responsiveSize';
-import { saveUserData } from './src/redux/reducers/auth';
+import { getData } from './src/utils/helperFunctions';
+import { notificationListener, requestUserPermission } from './src/utils/notificationService';
 
 const {dispatch} = store
 
@@ -22,6 +21,10 @@ const App = () => {
     initUser()
   }, [])
 
+  useEffect(()=>{
+    requestUserPermission()
+    notificationListener()
+  },[])
 
   const initUser = async() =>{
     try {

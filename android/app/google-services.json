@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "115403967072",
+    "project_id": "i-dev-555f3",
+    "storage_bucket": "i-dev-555f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115403967072:android:789de5757a1a71a6315105",
+        "android_client_info": {
+          "package_name": "com.idev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLqKnFOyjnBSNKvt4HJaiuv39YvS0sM_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

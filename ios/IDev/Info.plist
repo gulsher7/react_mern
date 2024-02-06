@@ -26,8 +26,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	 	<key>NSAllowsArbitraryLoads</key>
-    	<true/>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -37,20 +37,25 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>camera permission required for uploading the post or profile of user</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	 <key>NSCameraUsageDescription</key>
-  	<string>camera permission required for uploading the post or profile of user</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-  	<string>camera permission required for uploading the post or profile of user</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-  	<string>camera permission required for uploading the post or profile of user</string>
+	<string>camera permission required for uploading the post or profile of user</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>camera permission required for uploading the post or profile of user</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Barlow-Bold.ttf</string>
 		<string>Barlow-Medium.ttf</string>
 		<string>Barlow-Regular.ttf</string>
 		<string>Barlow-SemiBold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
