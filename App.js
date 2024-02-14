@@ -9,7 +9,7 @@ import store from './src/redux/store';
 import fontFamily from './src/styles/fontFamily';
 import { textScale } from './src/styles/responsiveSize';
 import { getData } from './src/utils/helperFunctions';
-import { notificationListener, requestUserPermission } from './src/utils/notificationService';
+import {requestUserPermission } from './src/utils/notificationService';
 
 const {dispatch} = store
 
@@ -23,7 +23,6 @@ const App = () => {
 
   useEffect(()=>{
     requestUserPermission()
-    notificationListener()
   },[])
 
   const initUser = async() =>{
