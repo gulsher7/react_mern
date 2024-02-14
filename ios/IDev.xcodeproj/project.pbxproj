@@ -55,6 +55,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FE918EA92B72B553009E61F9 /* IDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = IDev.entitlements; path = IDev/IDev.entitlements; sourceTree = "<group>"; };
 		FEE698C42B72AB6500E48A96 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "IDev/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FEFD43C92B7A176900C89CB9 /* libRNTusClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNTusClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEFD43CB2B7A17A800C89CB9 /* libTUSKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTUSKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FEFD43CB2B7A17A800C89CB9 /* libTUSKit.a */,
+				FEFD43C92B7A176900C89CB9 /* libRNTusClient.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-IDev.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-IDev-IDevTests.a */,
