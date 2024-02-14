@@ -16,15 +16,16 @@ import validator from '../../utils/validations'
 import navigationStrings from '../../Navigations/navigationStrings';
 import { userLogin } from '../../redux/actions/auth';
 import { saveUserData } from '../../redux/reducers/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // create a component
-const Login = ({navigation}) => {
+const Login = ({navigation, route}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [secureText, setSecureText] = useState(true)
     const [isLoading, setLoading] = useState(false)
 
-
+console.log("route params",route.params)
 
     const isValidData= () =>{
         const error = validator({
@@ -43,9 +44,13 @@ const Login = ({navigation}) => {
         if(checkValid){
             setLoading(true)
             try {
+            let fcmToken = await AsyncStorage.getItem('fcm_token');
+
                 const res = await userLogin({
                     email,
-                    password})
+                    password,
+                    fcmToken
+                })
                     console.log("login api res",res)
                     setLoading(false)
                     if(!!res.data && !res?.data?.validOTP){
