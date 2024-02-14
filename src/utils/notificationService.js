@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid,Platform} from 'react-native';
 
@@ -29,40 +30,17 @@ export async function requestUserPermission() {
 const getFCMToken = async() =>{
     try {
         await messaging().registerDeviceForRemoteMessages();
-        const token = await messaging().getToken();
-        console.log("token===>>>",token)
+
+        let fcmToken = await AsyncStorage.getItem('fcm_token')
+        if(!!fcmToken){
+           console.log("OLD FCM_TOKEN FOUND",fcmToken) 
+        }else{
+            const token = await messaging().getToken();
+            await AsyncStorage.setItem('fcm_token', token)
+            console.log("NEW FCM_TOKEN",token) 
+        }
     } catch (error) {
         console.log("error during generating token",error)
     }
 }
 
-export const notificationListener = async() =>{
-
-
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage,
-      );
-      //  navigation.navigate(remoteMessage.data.type);
-    });
-
-    messaging()
-    .getInitialNotification()
-    .then(remoteMessage => {
-      if (remoteMessage) {
-        console.log(
-          'Notification caused app to open from quit state:',
-          remoteMessage,
-        );
-      }
-    });
-
-
-      // firebase notifications dont show in foreground hence use custom library
-      messaging().onMessage(async remoteMessage=>{
-        console.log("notification on fore ground state", remoteMessage)
-        
-     
-      })
-}
