@@ -16,6 +16,7 @@ import validator from '../../utils/validations'
 import { showError } from '../../utils/helperFunctions';
 import axios from 'axios';
 import { userSignup } from '../../redux/actions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // create a component
@@ -48,11 +49,13 @@ const Signup = ({navigation}) => {
 
         if(checkValid){
             setLoading(true)
+            let fcmToken = await AsyncStorage.getItem('fcm_token');
             let data =  {
                 userName:userName,
                 fullName:fullName,
                 email:email,
-                password:password
+                password:password,
+                fcmToken: fcmToken
             }
             try {
                 let res = await userSignup(data)
