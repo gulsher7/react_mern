@@ -26,6 +26,7 @@ export const DELETE_COMMENT = getApiURL('/deleteComment');
 export const CREATE_PRIVATE_CHAT = getApiURL('/createPrivateChat');
 export const CREATE_GROUP_CHAT = getApiURL('/createGroupChat');
 export const MY_CHATS = getApiURL('/myChats');
+export const CHAT_BY_ID = getApiURL('/chatById');
 
 //messages apis
 export const SEND_MESSAGE = getApiURL('/sendMessage');
