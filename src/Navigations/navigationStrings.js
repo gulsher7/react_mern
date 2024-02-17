@@ -15,5 +15,5 @@ export default {
     ADD_POST:"addPost",
     POST_DETAIL:"postDetail",
     CHATS:"chats",
-    MESSAGES:"Messages"
+    MESSAGES:"messages"
 }
