@@ -14,7 +14,8 @@ import GroupImage from '../../Components/GroupImage';
 // create a component
 const limit = 50
 const Messages = ({ navigation, route }) => {
-    const { roomId, roomName, receiverIds, type } = route.params
+    const { roomId, roomName, receiverIds, type } = JSON.parse(route.params.data)
+
 
     const { userData } = useSelector(state => state?.auth)
     const [messages, setMessages] = useState([])
@@ -27,8 +28,6 @@ const Messages = ({ navigation, route }) => {
         online: false,
         lastSeen: null
     })
-
-    // console.log("receiverIdsreceiverIds",receiverIds)
 
 
     useEffect(() => {
