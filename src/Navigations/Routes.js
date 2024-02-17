@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { Linking, Text } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
-const NAVIGATION_IDS = ['login','signup'];
+const NAVIGATION_IDS = ['login','signup','messages'];
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +23,11 @@ function buildDeepLinkFromNotificationData(data) {
       return 'myapp://signup';
     }
   
+    if (navigationId === 'messages') {
+
+      return `myapp://messages/${data.data}`;
+    }
+  
     const chatId = data?.chatId;
     if (navigationId === 'login') {
       return `myapp://login/${chatId}`
@@ -35,9 +40,11 @@ function buildDeepLinkFromNotificationData(data) {
   const linking = {
     prefixes: ["myapp://"],
     config: {
+    initialRouteName: "tabRouts",
     screens: {
             login: 'login/:id',
             signup: 'signup',
+            messages: 'messages/:data'
     },
     },
     async getInitialURL() {
