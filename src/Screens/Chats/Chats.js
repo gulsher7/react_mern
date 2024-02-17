@@ -67,11 +67,15 @@ const Messages = ({ navigation }) => {
 
     const onPressItem = (item, type) => {
         // removerListerns()
-        navigation.navigate(navigationStrings.MESSAGES, {
+
+        let data = {
             roomId: item._id,
             roomName: type == 'group' ? item?.chatName : item?.users.filter(val => val._id !== userData._id)[0].userName,
             receiverIds: type == 'group' ? item?.users.filter((val) => val?._id !== userData?._id).map((val,i)=> val._id) : item?.users.filter(val => val._id !== userData._id)[0]._id,
             type
+        }
+        navigation.navigate(navigationStrings.MESSAGES, {
+            data: JSON.stringify(data)
         })
     }
 
