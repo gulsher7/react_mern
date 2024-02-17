@@ -36,8 +36,6 @@ const Home = ({ navigation }) => {
         try {
             const res = await actions.getAllPost(`?limit=50&userId=${userData?._id}`)
             console.log("res++++", res)
-
-
             setPosts(res.data)
         } catch (error) {
             console.log("error raised", error)
