@@ -568,9 +568,6 @@ PODS:
   - RNScreens (3.24.0):
     - React-Core
     - React-RCTImage
-  - RNTusClient (1.1.0):
-    - React-Core
-    - TUSKit (~> 1.4.2)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -579,7 +576,6 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
   - TOCropViewController (2.6.1)
-  - TUSKit (1.4.2)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -659,7 +655,6 @@ DEPENDENCIES:
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNTusClient (from `../node_modules/react-native-tus-client`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -691,7 +686,6 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - SocketRocket
     - TOCropViewController
-    - TUSKit
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -793,8 +787,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNTusClient:
-    :path: "../node_modules/react-native-tus-client"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -871,12 +863,10 @@ SPEC CHECKSUMS:
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
   RNImageCropPicker: 486e2f7e2b0461ce24321f751410dce1b3b49e6d
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
-  RNTusClient: b90393226531c118c4716a2b71128e3b9d9c77ee
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  TUSKit: 4bcc2fe13e1b4d6c3bfbaca57d64e64c1be31201
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
