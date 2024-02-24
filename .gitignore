@@ -64,3 +64,5 @@ yarn-error.log
 
 # testing
 /coverage
+ios/IDev/GoogleService-Info.plist
+android/app/google-services.json

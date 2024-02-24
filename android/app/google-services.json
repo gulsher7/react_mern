@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "115403967072",
-    "project_id": "i-dev-555f3",
-    "storage_bucket": "i-dev-555f3.appspot.com"
+    "project_number": "1007476291016",
+    "project_id": "rndevlearnnew",
+    "storage_bucket": "rndevlearnnew.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115403967072:android:789de5757a1a71a6315105",
+        "mobilesdk_app_id": "1:1007476291016:android:d7581bbbeab28c17ca7cfd",
         "android_client_info": {
           "package_name": "com.idev"
         }
@@ -15,7 +15,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCLqKnFOyjnBSNKvt4HJaiuv39YvS0sM_s"
+          "current_key": "AIzaSyCDsfZV5gxRWrgGL4T0F_n-p8Pp0lNdIBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007476291016:android:a854b2a18ee3b48eca7cfd",
+        "android_client_info": {
+          "package_name": "com.rndevlearnnew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDsfZV5gxRWrgGL4T0F_n-p8Pp0lNdIBM"
         }
       ],
       "services": {
