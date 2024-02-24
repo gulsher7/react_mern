@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCN2phIF4tUx644kB0GBHvfKrriBmVg16A</string>
+	<string>AIzaSyBqMLH0f29tGZGoyaqSe85MgoptmeBI3VA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>115403967072</string>
+	<string>1007476291016</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.idev</string>
 	<key>PROJECT_ID</key>
-	<string>i-dev-555f3</string>
+	<string>rndevlearnnew</string>
 	<key>STORAGE_BUCKET</key>
-	<string>i-dev-555f3.appspot.com</string>
+	<string>rndevlearnnew.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:115403967072:ios:e51385489dfd1a83315105</string>
+	<string>1:1007476291016:ios:6ed1e5b5785fccdbca7cfd</string>
 </dict>
 </plist>
